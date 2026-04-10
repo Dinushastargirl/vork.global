@@ -1,0 +1,105 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Employee profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["admin", "manager", "employee"] },
+        "jobTitle": { "type": "string" },
+        "photoURL": { "type": "string", "format": "uri" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "Attendance": {
+      "title": "Attendance Record",
+      "description": "Daily check-in and check-out logs",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "checkIn": { "type": "string", "format": "date-time" },
+        "checkOut": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["present", "absent", "late"] }
+      },
+      "required": ["userId", "date", "checkIn"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Project details and repository simulation",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "repositoryName": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "members": { "type": "array", "items": { "type": "string" } },
+        "status": { "type": "string", "enum": ["active", "archived", "completed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "ownerId", "status"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Project task or issue",
+      "type": "object",
+      "properties": {
+        "projectId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "assigneeId": { "type": "string" },
+        "priority": { "type": "string", "enum": ["low", "medium", "high", "urgent"] },
+        "status": { "type": "string", "enum": ["Backlog", "To Do", "In Progress", "Review", "Testing", "Done"] },
+        "deadline": { "type": "string", "format": "date-time" },
+        "issueNumber": { "type": "number" },
+        "branchName": { "type": "string" }
+      },
+      "required": ["projectId", "title", "status"]
+    },
+    "Leave": {
+      "title": "Leave Application",
+      "description": "Employee leave requests",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "type": { "type": "string", "enum": ["sick", "vacation", "personal"] },
+        "startDate": { "type": "string", "format": "date" },
+        "endDate": { "type": "string", "format": "date" },
+        "reason": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "approvedBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "type", "startDate", "endDate", "status"]
+    },
+    "PullRequest": {
+      "title": "Pull Request",
+      "description": "Code review and merge request",
+      "type": "object",
+      "properties": {
+        "projectId": { "type": "string" },
+        "taskId": { "type": "string" },
+        "title": { "type": "string" },
+        "authorId": { "type": "string" },
+        "sourceBranch": { "type": "string" },
+        "targetBranch": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "merged", "closed"] },
+        "approvals": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["projectId", "taskId", "title", "authorId", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": "User", "description": "User profiles" },
+    "/attendance/{attendanceId}": { "schema": "Attendance", "description": "Attendance records" },
+    "/projects/{projectId}": { "schema": "Project", "description": "Project definitions" },
+    "/tasks/{taskId}": { "schema": "Task", "description": "Project tasks" },
+    "/leaves/{leaveId}": { "schema": "Leave", "description": "Leave applications" },
+    "/pullRequests/{prId}": { "schema": "PullRequest", "description": "Pull requests" }
+  }
+}

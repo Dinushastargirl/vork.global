@@ -1,0 +1,199 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: {userId}
+    // Fields:
+    //   - uid: string (required) - Firebase Auth UID
+    //   - name: string (required)
+    //   - email: string (required)
+    //   - role: string (required, enum: admin, manager, employee)
+    //   - jobTitle: string (optional)
+    //   - photoURL: string (optional)
+    //   - createdAt: timestamp (required)
+    //
+    // Collection: attendance
+    // Document ID: {attendanceId}
+    // Fields:
+    //   - userId: string (required)
+    //   - date: string (required, YYYY-MM-DD)
+    //   - checkIn: timestamp (required)
+    //   - checkOut: timestamp (optional)
+    //   - status: string (required, enum: present, absent, late)
+    //
+    // Collection: projects
+    // Document ID: {projectId}
+    // Fields:
+    //   - name: string (required)
+    //   - description: string (optional)
+    //   - repositoryName: string (optional)
+    //   - ownerId: string (required)
+    //   - members: list (required, list of userIds)
+    //   - status: string (required, enum: active, archived, completed)
+    //   - createdAt: timestamp (required)
+    //
+    // Collection: tasks
+    // Document ID: {taskId}
+    // Fields:
+    //   - projectId: string (required)
+    //   - title: string (required)
+    //   - description: string (optional)
+    //   - assigneeId: string (optional)
+    //   - priority: string (required, enum: low, medium, high, urgent)
+    //   - status: string (required, enum: Backlog, To Do, In Progress, Review, Testing, Done)
+    //   - deadline: timestamp (optional)
+    //   - issueNumber: number (optional)
+    //   - branchName: string (optional)
+    //
+    // Collection: leaves
+    // Document ID: {leaveId}
+    // Fields:
+    //   - userId: string (required)
+    //   - type: string (required, enum: sick, vacation, personal)
+    //   - startDate: string (required, YYYY-MM-DD)
+    //   - endDate: string (required, YYYY-MM-DD)
+    //   - reason: string (optional)
+    //   - status: string (required, enum: pending, approved, rejected)
+    //   - approvedBy: string (optional)
+    //   - createdAt: timestamp (required)
+    //
+    // Collection: pullRequests
+    // Document ID: {prId}
+    // Fields:
+    //   - projectId: string (required)
+    //   - taskId: string (required)
+    //   - title: string (required)
+    //   - authorId: string (required)
+    //   - sourceBranch: string (required)
+    //   - targetBranch: string (required)
+    //   - status: string (required, enum: open, merged, closed)
+    //   - approvals: list (required, list of userIds)
+    //   - createdAt: timestamp (required)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+         (request.auth.token.email == "dinushapushparajah@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isManager() {
+      return isAuthenticated() && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'manager' || isAdmin());
+    }
+
+    function isProjectMember(projectId) {
+      return isAuthenticated() && 
+        (request.auth.uid in get(/databases/$(database)/documents/projects/$(projectId)).data.members || isAdmin());
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'name', 'email', 'role', 'createdAt']) &&
+             data.uid is string && data.uid == request.auth.uid &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.email is string && data.email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") &&
+             data.role in ['admin', 'manager', 'employee'] &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidAttendance(data) {
+      return data.keys().hasAll(['userId', 'date', 'checkIn', 'status']) &&
+             data.userId == request.auth.uid &&
+             data.date is string && data.date.matches("^\\d{4}-\\d{2}-\\d{2}$") &&
+             data.checkIn is timestamp &&
+             data.status in ['present', 'absent', 'late'];
+    }
+
+    function isValidProject(data) {
+      return data.keys().hasAll(['name', 'ownerId', 'members', 'status', 'createdAt']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.ownerId is string &&
+             data.members is list &&
+             data.status in ['active', 'archived', 'completed'] &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidTask(data) {
+      return data.keys().hasAll(['projectId', 'title', 'priority', 'status']) &&
+             data.projectId is string &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.priority in ['low', 'medium', 'high', 'urgent'] &&
+             data.status in ['Backlog', 'To Do', 'In Progress', 'Review', 'Testing', 'Done'];
+    }
+
+    function isValidLeave(data) {
+      return data.keys().hasAll(['userId', 'type', 'startDate', 'endDate', 'status', 'createdAt']) &&
+             data.userId == request.auth.uid &&
+             data.type in ['sick', 'vacation', 'personal'] &&
+             data.startDate is string && data.startDate.matches("^\\d{4}-\\d{2}-\\d{2}$") &&
+             data.endDate is string && data.endDate.matches("^\\d{4}-\\d{2}-\\d{2}$") &&
+             data.status in ['pending', 'approved', 'rejected'] &&
+             data.createdAt is timestamp;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isOwner(userId) && isValidUser(request.resource.data) && 
+                      (request.resource.data.role == resource.data.role || isAdmin());
+    }
+
+    match /attendance/{attendanceId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isManager());
+      allow create: if isAuthenticated() && isValidAttendance(request.resource.data);
+      allow update: if isAuthenticated() && (resource.data.userId == request.auth.uid || isManager());
+    }
+
+    match /projects/{projectId} {
+      allow read: if isAuthenticated();
+      allow create: if isManager();
+      allow update: if isManager() || (isAuthenticated() && request.auth.uid in resource.data.members);
+    }
+
+    match /tasks/{taskId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated();
+      allow delete: if isManager();
+    }
+
+    match /leaves/{leaveId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isManager());
+      allow create: if isAuthenticated() && isValidLeave(request.resource.data);
+      allow update: if isManager() || (isOwner(resource.data.userId) && resource.data.status == 'pending');
+    }
+
+    match /pullRequests/{prId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated();
+    }
+
+    match /test/connection {
+      allow read: if true;
+    }
+  }
+}

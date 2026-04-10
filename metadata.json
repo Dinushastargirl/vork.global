@@ -1,0 +1,5 @@
+{
+  "name": "Nexus AI Workflow",
+  "description": "A comprehensive internal workflow system for AI automation agencies, featuring HR management, project tracking, and a GitHub-style development workflow.",
+  "requestFramePermissions": []
+}
