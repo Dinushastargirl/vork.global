@@ -92,7 +92,7 @@ export function ProjectManagement({ profile }: { profile: any }) {
                   value={newProject.name} 
                   onChange={(e) => setNewProject({...newProject, name: e.target.value})}
                   className="bg-muted/50 border-border h-12 rounded-xl focus:ring-primary/30" 
-                  placeholder="e.g. Nexus Core AI"
+                  placeholder="e.g. Vork Core AI"
                 />
               </div>
               <div className="space-y-2">
@@ -116,7 +116,7 @@ export function ProjectManagement({ profile }: { profile: any }) {
                     value={newProject.repositoryName} 
                     onChange={(e) => setNewProject({...newProject, repositoryName: e.target.value})}
                     className="bg-muted/50 border-border h-12 rounded-xl focus:ring-primary/30" 
-                    placeholder="nexus-core-ai"
+                    placeholder="vork-core-ai"
                   />
                 </div>
               </div>

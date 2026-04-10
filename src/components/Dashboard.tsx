@@ -115,7 +115,7 @@ export function Dashboard({ profile }: { profile: UserProfile | null }) {
                   <div className="flex-1 space-y-1.5">
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-medium text-foreground">
-                        <span className="text-primary font-bold">Alex Chen</span> merged PR <span className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">#42</span> in <span className="text-foreground/80 font-semibold italic">Nexus Core</span>
+                        <span className="text-primary font-bold">Alex Chen</span> merged PR <span className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">#42</span> in <span className="text-foreground/80 font-semibold italic">Vork Core</span>
                       </p>
                       <span className="text-[10px] font-mono text-muted-foreground uppercase">2h ago</span>
                     </div>
@@ -170,7 +170,7 @@ export function Dashboard({ profile }: { profile: UserProfile | null }) {
               <div className="space-y-1">
                 <h4 className="font-bold text-sm">AI Insights</h4>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Your team's velocity increased by <span className="text-emerald-500 font-bold">12%</span> this week. Project "Nexus Core" is ahead of schedule.
+                  Your team's velocity increased by <span className="text-emerald-500 font-bold">12%</span> this week. Project "Vork Core" is ahead of schedule.
                 </p>
               </div>
               <Button size="sm" className="w-full text-[10px] font-bold uppercase tracking-widest h-8">

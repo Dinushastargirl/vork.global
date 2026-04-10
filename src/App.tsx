@@ -137,14 +137,14 @@ export default function App() {
       const guestUser = {
         uid: 'demo-user',
         displayName: 'Demo Admin',
-        email: 'demo@nexus.ai',
+        email: 'demo@vork.ai',
         photoURL: null,
       } as any;
       
       const demoProfile: UserProfile = {
         uid: 'demo-user',
         name: 'Demo Admin',
-        email: 'demo@nexus.ai',
+        email: 'demo@vork.ai',
         role: 'admin',
         jobTitle: 'System Architect',
       };
@@ -208,7 +208,7 @@ export default function App() {
               transition={{ delay: 0.2 }}
               className="text-6xl md:text-8xl font-display font-bold tracking-tighter text-gradient"
             >
-              NEXUS AI
+              VORK AI
             </motion.h1>
             <p className="text-xl text-muted-foreground max-w-lg mx-auto font-light tracking-wide">
               The intelligent operating system for elite AI Automation Agencies.
@@ -306,7 +306,7 @@ export default function App() {
               animate={{ opacity: 1 }}
               className="font-display font-bold text-xl tracking-tight whitespace-nowrap text-gradient"
             >
-              NEXUS AI
+              VORK AI
             </motion.span>
           )}
         </div>
@@ -399,7 +399,7 @@ export default function App() {
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
             <div className="flex items-center gap-2">
-              <span className="text-muted-foreground font-mono text-xs uppercase tracking-widest">NEXUS</span>
+              <span className="text-muted-foreground font-mono text-xs uppercase tracking-widest">VORK</span>
               <ChevronRight className="w-3 h-3 text-muted-foreground/50" />
               <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-gradient">{currentView.replace('-', ' ')}</h2>
             </div>
