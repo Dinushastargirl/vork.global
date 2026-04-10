@@ -94,7 +94,7 @@ export function LeaveManagement({ profile }: { profile: any }) {
               <Plus className="w-4 h-4" /> Apply for Leave
             </Button>
           </DialogTrigger>
-          <DialogContent className="glass border-white/10 text-foreground max-w-lg rounded-3xl">
+          <DialogContent className="glass border-border text-foreground max-w-lg rounded-3xl">
             <DialogHeader>
               <DialogTitle className="text-2xl font-display font-bold">Apply for Leave</DialogTitle>
               <CardDescription className="text-muted-foreground font-light">Submit a new leave request for approval.</CardDescription>
@@ -102,16 +102,18 @@ export function LeaveManagement({ profile }: { profile: any }) {
             <div className="space-y-6 py-6">
               <div className="space-y-2">
                 <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Leave Type</Label>
-                <Select value={newLeave.type} onValueChange={(v) => setNewLeave({...newLeave, type: v})}>
-                  <SelectTrigger className="bg-white/5 border-white/10 h-12 rounded-xl focus:ring-primary/30">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="glass border-zinc-800 text-zinc-100">
-                    <SelectItem value="vacation">Vacation</SelectItem>
-                    <SelectItem value="sick">Sick Leave</SelectItem>
-                    <SelectItem value="personal">Personal Leave</SelectItem>
-                  </SelectContent>
-                </Select>
+                <span className="block">
+                  <Select value={newLeave.type} onValueChange={(v) => setNewLeave({...newLeave, type: v})}>
+                    <SelectTrigger className="bg-muted/50 border-border h-12 rounded-xl focus:ring-primary/30">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="glass border-border text-foreground">
+                      <SelectItem value="vacation">Vacation</SelectItem>
+                      <SelectItem value="sick">Sick Leave</SelectItem>
+                      <SelectItem value="personal">Personal Leave</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </span>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -120,7 +122,7 @@ export function LeaveManagement({ profile }: { profile: any }) {
                     type="date" 
                     value={newLeave.startDate} 
                     onChange={(e) => setNewLeave({...newLeave, startDate: e.target.value})}
-                    className="bg-white/5 border-white/10 h-12 rounded-xl focus:ring-primary/30" 
+                    className="bg-muted/50 border-border h-12 rounded-xl focus:ring-primary/30" 
                   />
                 </div>
                 <div className="space-y-2">
@@ -129,7 +131,7 @@ export function LeaveManagement({ profile }: { profile: any }) {
                     type="date" 
                     value={newLeave.endDate} 
                     onChange={(e) => setNewLeave({...newLeave, endDate: e.target.value})}
-                    className="bg-white/5 border-white/10 h-12 rounded-xl focus:ring-primary/30" 
+                    className="bg-muted/50 border-border h-12 rounded-xl focus:ring-primary/30" 
                   />
                 </div>
               </div>
@@ -138,7 +140,7 @@ export function LeaveManagement({ profile }: { profile: any }) {
                 <Input 
                   value={newLeave.reason} 
                   onChange={(e) => setNewLeave({...newLeave, reason: e.target.value})}
-                  className="bg-white/5 border-white/10 h-12 rounded-xl focus:ring-primary/30" 
+                  className="bg-muted/50 border-border h-12 rounded-xl focus:ring-primary/30" 
                   placeholder="Optional reason for leave"
                 />
               </div>
@@ -152,14 +154,14 @@ export function LeaveManagement({ profile }: { profile: any }) {
       </div>
 
       <Card className="glass-card overflow-hidden">
-        <CardHeader className="border-b border-white/5 bg-white/[0.02]">
+        <CardHeader className="border-b border-border bg-muted/20">
           <CardTitle className="text-xl font-display font-bold">Leave Requests</CardTitle>
           <CardDescription className="text-xs font-light">History and status of leave applications.</CardDescription>
         </CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow className="border-white/5 hover:bg-transparent">
+              <TableRow className="border-border hover:bg-transparent">
                 <TableHead className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground pl-6">Type</TableHead>
                 <TableHead className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Duration</TableHead>
                 <TableHead className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Reason</TableHead>
@@ -171,7 +173,7 @@ export function LeaveManagement({ profile }: { profile: any }) {
             </TableHeader>
             <TableBody>
               {leaves.map((leave) => (
-                <TableRow key={leave.id} className="border-white/5 hover:bg-white/[0.02] transition-colors group">
+                <TableRow key={leave.id} className="border-border hover:bg-muted/30 transition-colors group">
                   <TableCell className="pl-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className={`w-2 h-2 rounded-full ${

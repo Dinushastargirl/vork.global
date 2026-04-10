@@ -88,41 +88,41 @@ export function Dashboard({ profile }: { profile: UserProfile | null }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Card className="lg:col-span-2 glass-card overflow-hidden">
-          <CardHeader className="border-b border-white/5 bg-white/[0.02]">
+          <CardHeader className="border-b border-border bg-muted/20">
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-xl font-display font-bold">Recent Activity</CardTitle>
                 <CardDescription className="text-muted-foreground font-light">Latest updates from your team and projects.</CardDescription>
               </div>
-              <Button variant="ghost" size="sm" className="text-xs font-mono uppercase tracking-widest hover:bg-white/5">
+              <Button variant="ghost" size="sm" className="text-xs font-mono uppercase tracking-widest hover:bg-accent">
                 View All
               </Button>
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="divide-y divide-white/5">
+            <div className="divide-y divide-border">
               {[1, 2, 3, 4].map((i) => (
                 <motion.div 
                   key={i} 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 + (i * 0.1) }}
-                  className="p-6 flex gap-5 items-start hover:bg-white/[0.02] transition-colors group"
+                  className="p-6 flex gap-5 items-start hover:bg-muted/30 transition-colors group"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center shrink-0 border border-white/5 group-hover:border-primary/30 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center shrink-0 border border-border group-hover:border-primary/30 transition-all duration-300">
                     <Clock className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                   </div>
                   <div className="flex-1 space-y-1.5">
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-medium text-foreground">
-                        <span className="text-primary font-bold">Alex Chen</span> merged PR <span className="font-mono text-xs bg-white/5 px-1.5 py-0.5 rounded">#42</span> in <span className="text-zinc-300 font-semibold italic">Nexus Core</span>
+                        <span className="text-primary font-bold">Alex Chen</span> merged PR <span className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">#42</span> in <span className="text-foreground/80 font-semibold italic">Nexus Core</span>
                       </p>
                       <span className="text-[10px] font-mono text-muted-foreground uppercase">2h ago</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-[10px] font-mono text-muted-foreground bg-white/5 px-2 py-0.5 rounded uppercase tracking-wider">Feature/Auth-System</span>
-                      <div className="w-1 h-1 rounded-full bg-zinc-700" />
-                      <span className="text-[10px] text-zinc-500">Updated authentication flow for enterprise clients</span>
+                      <span className="text-[10px] font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded uppercase tracking-wider">Feature/Auth-System</span>
+                      <div className="w-1 h-1 rounded-full bg-muted-foreground/30" />
+                      <span className="text-[10px] text-muted-foreground/60">Updated authentication flow for enterprise clients</span>
                     </div>
                   </div>
                 </motion.div>
@@ -138,21 +138,21 @@ export function Dashboard({ profile }: { profile: UserProfile | null }) {
               <CardDescription className="text-xs">Common tasks and workflows</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button className="w-full justify-between group h-11 rounded-xl bg-white/5 border-white/5 hover:bg-primary hover:text-white transition-all duration-300" variant="outline">
+              <Button className="w-full justify-between group h-11 rounded-xl bg-muted/50 border-border hover:bg-primary hover:text-primary-foreground transition-all duration-300" variant="outline">
                 <span className="flex items-center gap-3">
                   <Clock className="w-4 h-4" /> 
                   <span className="text-sm font-medium">Check In Today</span>
                 </span>
                 <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" />
               </Button>
-              <Button className="w-full justify-between group h-11 rounded-xl bg-white/5 border-white/5 hover:bg-primary hover:text-white transition-all duration-300" variant="outline">
+              <Button className="w-full justify-between group h-11 rounded-xl bg-muted/50 border-border hover:bg-primary hover:text-primary-foreground transition-all duration-300" variant="outline">
                 <span className="flex items-center gap-3">
                   <Briefcase className="w-4 h-4" /> 
                   <span className="text-sm font-medium">Create Project</span>
                 </span>
                 <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" />
               </Button>
-              <Button className="w-full justify-between group h-11 rounded-xl bg-white/5 border-white/5 hover:bg-primary hover:text-white transition-all duration-300" variant="outline">
+              <Button className="w-full justify-between group h-11 rounded-xl bg-muted/50 border-border hover:bg-primary hover:text-primary-foreground transition-all duration-300" variant="outline">
                 <span className="flex items-center gap-3">
                   <Calendar className="w-4 h-4" /> 
                   <span className="text-sm font-medium">Apply for Leave</span>
@@ -193,7 +193,7 @@ function StatCard({ title, value, icon: Icon, trend, trendLabel, description, co
         </div>
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
-            <div className="p-2.5 bg-white/5 rounded-xl border border-white/5 group-hover:border-primary/30 transition-colors">
+            <div className="p-2.5 bg-muted rounded-xl border border-border group-hover:border-primary/30 transition-colors">
               <Icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </div>
             <div className="flex flex-col items-end">
@@ -208,7 +208,7 @@ function StatCard({ title, value, icon: Icon, trend, trendLabel, description, co
             <div className="flex items-baseline gap-2">
               <p className={`text-4xl font-display font-bold ${color}`}>{value}</p>
             </div>
-            <p className="text-[10px] text-zinc-500 font-light italic">{description}</p>
+            <p className="text-[10px] text-muted-foreground/60 font-light italic">{description}</p>
           </div>
         </CardContent>
       </Card>

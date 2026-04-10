@@ -80,13 +80,13 @@ export function TaskManagement({ profile }: { profile: any }) {
           <p className="text-muted-foreground font-light">Track development progress and manage GitHub-style issues.</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <div className="flex items-center gap-2 bg-white/5 border border-white/5 rounded-xl px-3 py-1">
+          <div className="flex items-center gap-2 bg-muted/50 border border-border rounded-xl px-3 py-1">
             <Filter className="w-3.5 h-3.5 text-muted-foreground" />
             <Select value={selectedProjectId} onValueChange={setSelectedProjectId}>
               <SelectTrigger className="w-[180px] bg-transparent border-none h-8 text-xs focus:ring-0">
                 <SelectValue placeholder="Filter by Project" />
               </SelectTrigger>
-              <SelectContent className="glass border-zinc-800 text-zinc-100">
+              <SelectContent className="glass border-border text-foreground">
                 <SelectItem value="all">All Projects</SelectItem>
                 {projects.map(p => (
                   <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
@@ -101,7 +101,7 @@ export function TaskManagement({ profile }: { profile: any }) {
       </div>
 
       <Tabs defaultValue="board" className="w-full">
-        <div className="flex items-center justify-between border-b border-white/5 pb-1">
+        <div className="flex items-center justify-between border-b border-border pb-1">
           <TabsList className="bg-transparent border-none p-0 h-auto gap-8">
             <TabsTrigger value="board" className="bg-transparent border-none p-0 pb-3 rounded-none data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary text-muted-foreground data-[state=active]:text-foreground transition-all flex items-center gap-2">
               <LayoutGrid className="w-4 h-4" />
@@ -125,16 +125,16 @@ export function TaskManagement({ profile }: { profile: any }) {
                 <div className="flex items-center justify-between px-2">
                   <div className="flex items-center gap-3">
                     <h3 className="font-display font-bold text-[11px] uppercase tracking-[0.2em] text-muted-foreground italic">{status}</h3>
-                    <div className="w-5 h-5 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-[10px] font-mono text-muted-foreground">
+                    <div className="w-5 h-5 rounded-full bg-muted border border-border flex items-center justify-center text-[10px] font-mono text-muted-foreground">
                       {tasks.filter(t => t.status === status).length}
                     </div>
                   </div>
-                  <Button variant="ghost" size="icon" className="h-6 w-6 rounded-full hover:bg-white/5">
+                  <Button variant="ghost" size="icon" className="h-6 w-6 rounded-full hover:bg-accent">
                     <Plus className="w-3 h-3 text-muted-foreground" />
                   </Button>
                 </div>
                 
-                <div className="flex-1 bg-white/[0.02] rounded-2xl p-3 border border-dashed border-white/5 space-y-4 min-h-[500px]">
+                <div className="flex-1 bg-muted/20 rounded-2xl p-3 border border-dashed border-border space-y-4 min-h-[500px]">
                   <AnimatePresence>
                     {tasks.filter(t => t.status === status).map(task => (
                       <TaskCard key={task.id} task={task} onStatusChange={updateTaskStatus} />
@@ -149,13 +149,13 @@ export function TaskManagement({ profile }: { profile: any }) {
         <TabsContent value="list" className="mt-8">
           <Card className="glass-card overflow-hidden">
             <CardContent className="p-0">
-              <div className="divide-y divide-white/5">
+              <div className="divide-y divide-border">
                 {tasks.map(task => (
                   <motion.div 
                     key={task.id} 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="p-5 flex items-start gap-5 hover:bg-white/[0.02] transition-all group"
+                    className="p-5 flex items-start gap-5 hover:bg-muted/30 transition-all group"
                   >
                     <div className="mt-1">
                       {task.status === 'Done' ? (
@@ -163,15 +163,15 @@ export function TaskManagement({ profile }: { profile: any }) {
                           <CheckSquare className="w-3 h-3 text-emerald-500" />
                         </div>
                       ) : (
-                        <div className="w-5 h-5 rounded-full bg-zinc-800 flex items-center justify-center border border-zinc-700">
-                          <AlertCircle className="w-3 h-3 text-zinc-500" />
+                        <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center border border-border">
+                          <AlertCircle className="w-3 h-3 text-muted-foreground" />
                         </div>
                       )}
                     </div>
                     <div className="flex-1 space-y-1.5">
                       <div className="flex items-center gap-3">
                         <span className="font-bold text-foreground group-hover:text-primary transition-colors">{task.title}</span>
-                        <span className="font-mono text-[10px] text-muted-foreground bg-white/5 px-2 py-0.5 rounded">#{task.issueNumber}</span>
+                        <span className="font-mono text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded">#{task.issueNumber}</span>
                       </div>
                       <div className="flex items-center gap-5 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
                         <span className="flex items-center gap-1.5">
@@ -190,7 +190,7 @@ export function TaskManagement({ profile }: { profile: any }) {
                     <Badge className={`rounded-full px-3 py-0.5 text-[9px] font-bold uppercase tracking-widest ${
                       task.priority === 'urgent' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
                       task.priority === 'high' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
-                      'bg-white/5 text-muted-foreground border-white/5'
+                      'bg-muted text-muted-foreground border-border'
                     }`}>
                       {task.priority}
                     </Badge>
@@ -203,14 +203,14 @@ export function TaskManagement({ profile }: { profile: any }) {
 
         <TabsContent value="prs" className="mt-8">
           <div className="flex flex-col items-center justify-center py-32 text-muted-foreground space-y-6 glass-card rounded-3xl">
-            <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center border border-white/5">
+            <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center border border-border">
               <GitPullRequest className="w-10 h-10 opacity-20" />
             </div>
             <div className="text-center space-y-2">
               <p className="font-display font-bold text-lg">No active pull requests</p>
               <p className="text-sm font-light">Start a new feature branch to create a merge request.</p>
             </div>
-            <Button variant="outline" size="sm" className="rounded-full px-8 h-10 bg-white/5 border-white/5 hover:bg-primary hover:text-white transition-all">
+            <Button variant="outline" size="sm" className="rounded-full px-8 h-10 bg-muted/50 border-border hover:bg-primary hover:text-primary-foreground transition-all">
               Create Pull Request
             </Button>
           </div>
@@ -239,21 +239,21 @@ function TaskCard({ task, onStatusChange }: { task: Task, onStatusChange: any, k
         }`} />
         <CardContent className="p-4 space-y-4">
           <div className="flex justify-between items-start">
-            <span className="text-[10px] font-mono text-muted-foreground bg-white/5 px-1.5 py-0.5 rounded">#{task.issueNumber}</span>
+            <span className="text-[10px] font-mono text-muted-foreground bg-muted px-1.5 py-0.5 rounded">#{task.issueNumber}</span>
             <Badge variant="outline" className={`text-[9px] font-bold uppercase tracking-widest h-5 px-2 rounded-full ${
               task.priority === 'urgent' ? 'border-red-500/50 text-red-400 bg-red-500/5' :
               task.priority === 'high' ? 'border-amber-500/50 text-amber-400 bg-amber-500/5' :
-              'border-white/10 text-muted-foreground bg-white/5'
+              'border-border text-muted-foreground bg-muted'
             }`}>
               {task.priority}
             </Badge>
           </div>
           <h4 className="text-sm font-bold leading-tight group-hover:text-primary transition-colors line-clamp-2">{task.title}</h4>
           
-          <div className="flex items-center justify-between pt-2 border-t border-white/5">
+          <div className="flex items-center justify-between pt-2 border-t border-border">
             <div className="flex -space-x-2">
-              <Avatar className="w-7 h-7 border-2 border-zinc-900 ring-1 ring-white/10">
-                <AvatarFallback className="text-[8px] font-bold bg-zinc-800">JD</AvatarFallback>
+              <Avatar className="w-7 h-7 border-2 border-background ring-1 ring-border">
+                <AvatarFallback className="text-[8px] font-bold bg-muted">JD</AvatarFallback>
               </Avatar>
             </div>
             {task.branchName && (

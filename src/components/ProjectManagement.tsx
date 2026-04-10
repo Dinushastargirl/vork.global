@@ -79,7 +79,7 @@ export function ProjectManagement({ profile }: { profile: any }) {
               <Plus className="w-4 h-4" /> New Project
             </Button>
           </DialogTrigger>
-          <DialogContent className="glass border-white/10 text-foreground max-w-lg rounded-3xl">
+          <DialogContent className="glass border-border text-foreground max-w-lg rounded-3xl">
             <DialogHeader>
               <DialogTitle className="text-2xl font-display font-bold">Create New Project</DialogTitle>
               <CardDescription className="text-muted-foreground font-light">Set up a new workflow for your client.</CardDescription>
@@ -91,7 +91,7 @@ export function ProjectManagement({ profile }: { profile: any }) {
                   id="name" 
                   value={newProject.name} 
                   onChange={(e) => setNewProject({...newProject, name: e.target.value})}
-                  className="bg-white/5 border-white/10 h-12 rounded-xl focus:ring-primary/30" 
+                  className="bg-muted/50 border-border h-12 rounded-xl focus:ring-primary/30" 
                   placeholder="e.g. Nexus Core AI"
                 />
               </div>
@@ -101,21 +101,21 @@ export function ProjectManagement({ profile }: { profile: any }) {
                   id="desc" 
                   value={newProject.description} 
                   onChange={(e) => setNewProject({...newProject, description: e.target.value})}
-                  className="bg-white/5 border-white/10 h-12 rounded-xl focus:ring-primary/30" 
+                  className="bg-muted/50 border-border h-12 rounded-xl focus:ring-primary/30" 
                   placeholder="Brief overview of the project"
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="repo" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Repository Name</Label>
                 <div className="flex gap-2">
-                  <div className="flex items-center px-4 bg-white/5 border border-white/10 rounded-xl text-muted-foreground text-xs font-mono">
+                  <div className="flex items-center px-4 bg-muted/50 border border-border rounded-xl text-muted-foreground text-xs font-mono">
                     agency/
                   </div>
                   <Input 
                     id="repo" 
                     value={newProject.repositoryName} 
                     onChange={(e) => setNewProject({...newProject, repositoryName: e.target.value})}
-                    className="bg-white/5 border-white/10 h-12 rounded-xl focus:ring-primary/30" 
+                    className="bg-muted/50 border-border h-12 rounded-xl focus:ring-primary/30" 
                     placeholder="nexus-core-ai"
                   />
                 </div>
@@ -169,11 +169,11 @@ export function ProjectManagement({ profile }: { profile: any }) {
                     </div>
                   </div>
                   
-                  <div className="pt-6 border-t border-white/5 flex gap-3">
-                    <Button variant="outline" className="flex-1 gap-2 text-[10px] font-bold uppercase tracking-widest h-10 rounded-xl bg-white/5 border-white/5 hover:bg-primary hover:text-white transition-all group/btn">
+                  <div className="pt-6 border-t border-border flex gap-3">
+                    <Button variant="outline" className="flex-1 gap-2 text-[10px] font-bold uppercase tracking-widest h-10 rounded-xl bg-muted/50 border-border hover:bg-primary hover:text-primary-foreground transition-all group/btn">
                       Board <ArrowUpRight className="w-3 h-3 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                     </Button>
-                    <Button variant="outline" className="flex-1 gap-2 text-[10px] font-bold uppercase tracking-widest h-10 rounded-xl bg-white/5 border-white/5 hover:bg-zinc-800 transition-all">
+                    <Button variant="outline" className="flex-1 gap-2 text-[10px] font-bold uppercase tracking-widest h-10 rounded-xl bg-muted/50 border-border hover:bg-accent hover:text-accent-foreground transition-all">
                       <Github className="w-3.5 h-3.5" /> Repo
                     </Button>
                   </div>

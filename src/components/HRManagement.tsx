@@ -128,7 +128,7 @@ export function HRManagement({ profile }: { profile: UserProfile | null }) {
               <UserX className="w-4 h-4" /> Check Out
             </Button>
           ) : (
-            <Badge variant="outline" className="h-11 px-6 text-muted-foreground border-white/5 bg-white/5 rounded-xl font-mono text-[10px] uppercase tracking-widest">
+            <Badge variant="outline" className="h-11 px-6 text-muted-foreground border-border bg-muted/50 rounded-xl font-mono text-[10px] uppercase tracking-widest">
               Shift Completed
             </Badge>
           )}
@@ -137,16 +137,16 @@ export function HRManagement({ profile }: { profile: UserProfile | null }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Card className="lg:col-span-2 glass-card overflow-hidden">
-          <CardHeader className="flex flex-row items-center justify-between border-b border-white/5 bg-white/[0.02]">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-border bg-muted/20">
             <div>
               <CardTitle className="text-xl font-display font-bold">Employee Directory</CardTitle>
               <CardDescription className="text-xs font-light">A list of all team members and their roles.</CardDescription>
             </div>
             <div className="flex gap-2">
-              <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl hover:bg-white/5">
+              <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl hover:bg-accent">
                 <Search className="w-4 h-4 text-muted-foreground" />
               </Button>
-              <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl hover:bg-white/5">
+              <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl hover:bg-accent">
                 <Filter className="w-4 h-4 text-muted-foreground" />
               </Button>
             </div>
@@ -154,7 +154,7 @@ export function HRManagement({ profile }: { profile: UserProfile | null }) {
           <CardContent className="p-0">
             <Table>
               <TableHeader>
-                <TableRow className="border-white/5 hover:bg-transparent">
+                <TableRow className="border-border hover:bg-transparent">
                   <TableHead className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground pl-6">Employee</TableHead>
                   <TableHead className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Role</TableHead>
                   <TableHead className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Status</TableHead>
@@ -163,12 +163,12 @@ export function HRManagement({ profile }: { profile: UserProfile | null }) {
               </TableHeader>
               <TableBody>
                 {employees.map((emp) => (
-                  <TableRow key={emp.uid} className="border-white/5 hover:bg-white/[0.02] transition-colors group">
+                  <TableRow key={emp.uid} className="border-border hover:bg-muted/30 transition-colors group">
                     <TableCell className="pl-6 py-4">
                       <div className="flex items-center gap-4">
-                        <Avatar className="h-10 w-10 ring-2 ring-white/5 group-hover:ring-primary/20 transition-all">
+                        <Avatar className="h-10 w-10 ring-2 ring-border group-hover:ring-primary/20 transition-all">
                           <AvatarImage src={emp.photoURL} />
-                          <AvatarFallback className="bg-zinc-800 font-bold">{emp.name.charAt(0)}</AvatarFallback>
+                          <AvatarFallback className="bg-muted font-bold">{emp.name.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col">
                           <span className="font-bold text-sm tracking-tight">{emp.name}</span>
@@ -188,7 +188,7 @@ export function HRManagement({ profile }: { profile: UserProfile | null }) {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right pr-6">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-white/5">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-accent">
                         <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
                       </Button>
                     </TableCell>
@@ -200,12 +200,12 @@ export function HRManagement({ profile }: { profile: UserProfile | null }) {
         </Card>
 
         <Card className="glass-card overflow-hidden">
-          <CardHeader className="border-b border-white/5 bg-white/[0.02]">
+          <CardHeader className="border-b border-border bg-muted/20">
             <CardTitle className="text-lg font-display font-bold">Today's Attendance</CardTitle>
             <CardDescription className="text-xs font-light">Real-time tracking of team presence.</CardDescription>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="divide-y divide-white/5">
+            <div className="divide-y divide-border">
               {employees.map(emp => {
                 const record = attendance.find(a => a.userId === emp.uid && a.date === format(new Date(), 'yyyy-MM-dd'));
                 return (
@@ -213,12 +213,12 @@ export function HRManagement({ profile }: { profile: UserProfile | null }) {
                     key={emp.uid} 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="p-5 flex items-center justify-between hover:bg-white/[0.02] transition-colors group"
+                    className="p-5 flex items-center justify-between hover:bg-muted/30 transition-colors group"
                   >
                     <div className="flex items-center gap-4">
-                      <Avatar className="h-9 w-9 ring-1 ring-white/5 group-hover:ring-primary/20 transition-all">
+                      <Avatar className="h-9 w-9 ring-1 ring-border group-hover:ring-primary/20 transition-all">
                         <AvatarImage src={emp.photoURL} />
-                        <AvatarFallback className="bg-zinc-800 text-[10px] font-bold">{emp.name.charAt(0)}</AvatarFallback>
+                        <AvatarFallback className="bg-muted text-[10px] font-bold">{emp.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col">
                         <span className="text-sm font-bold tracking-tight">{emp.name}</span>
@@ -239,7 +239,7 @@ export function HRManagement({ profile }: { profile: UserProfile | null }) {
                         </span>
                       </div>
                     ) : (
-                      <Badge variant="outline" className="rounded-full px-2 py-0 text-[8px] font-bold uppercase tracking-widest bg-white/5 text-muted-foreground border-white/5">
+                      <Badge variant="outline" className="rounded-full px-2 py-0 text-[8px] font-bold uppercase tracking-widest bg-muted text-muted-foreground border-border">
                         Offline
                       </Badge>
                     )}

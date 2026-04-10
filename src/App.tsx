@@ -24,7 +24,9 @@ import {
   Clock,
   CheckCircle2,
   AlertCircle,
-  Sparkles
+  Sparkles,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './components/ui/card';
@@ -57,6 +59,23 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [currentView, setCurrentView] = useState<View>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') as 'light' | 'dark' || 'dark';
+    }
+    return 'dark';
+  });
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark');
+    root.classList.add(theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -116,7 +135,7 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-zinc-950 text-white">
+      <div className="flex items-center justify-center min-h-screen bg-background text-foreground">
         <motion.div 
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -179,7 +198,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="pt-12 grid grid-cols-3 gap-8 border-t border-white/5">
+          <div className="pt-12 grid grid-cols-3 gap-8 border-t border-border">
             {[
               { icon: Users, label: 'HR & Talent' },
               { icon: LayoutDashboard, label: 'Project Hub' },
@@ -214,14 +233,14 @@ export default function App() {
   ];
 
   return (
-    <div className="flex h-screen bg-background text-foreground overflow-hidden font-sans">
-      <Toaster position="top-right" theme="dark" />
+    <div className={`flex h-screen bg-background text-foreground overflow-hidden font-sans ${theme}`}>
+      <Toaster position="top-right" theme={theme} />
       
       {/* Sidebar */}
       <motion.aside 
         initial={false}
         animate={{ width: sidebarOpen ? 280 : 80 }}
-        className="relative flex flex-col border-r border-border bg-zinc-950/50 backdrop-blur-2xl z-30"
+        className="relative flex flex-col border-r border-border bg-sidebar/50 backdrop-blur-2xl z-30"
       >
         <div className="p-6 flex items-center gap-4 overflow-hidden">
           <div className="min-w-[40px] h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20 ring-1 ring-white/20">
@@ -248,8 +267,8 @@ export default function App() {
                 onClick={() => setCurrentView(item.id as View)}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 group relative ${
                   isActive 
-                    ? 'text-white' 
-                    : 'text-muted-foreground hover:bg-white/5 hover:text-foreground'
+                    ? 'text-primary-foreground' 
+                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
                 }`}
               >
                 {isActive && (
@@ -281,7 +300,7 @@ export default function App() {
         <div className="p-4 border-t border-border/50">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-muted-foreground hover:bg-red-500/10 hover:text-red-400 transition-all duration-200 group"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all duration-200 group"
           >
             <LogOut className="w-5 h-5 shrink-0" />
             {sidebarOpen && (
@@ -295,10 +314,10 @@ export default function App() {
             )}
           </button>
           
-          <div className="mt-4 p-2 rounded-2xl bg-white/5 border border-white/5 flex items-center gap-3">
-            <Avatar className="w-9 h-9 border border-white/10 shadow-inner">
+          <div className="mt-4 p-2 rounded-2xl bg-sidebar-accent/50 border border-sidebar-border flex items-center gap-3">
+            <Avatar className="w-9 h-9 border border-sidebar-border shadow-inner">
               <AvatarImage src={profile?.photoURL} />
-              <AvatarFallback className="bg-zinc-800 text-xs font-bold">{profile?.name.charAt(0)}</AvatarFallback>
+              <AvatarFallback className="bg-muted text-xs font-bold">{profile?.name.charAt(0)}</AvatarFallback>
             </Avatar>
             {sidebarOpen && (
               <motion.div 
@@ -321,7 +340,7 @@ export default function App() {
           <div className="flex items-center gap-6">
             <button 
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 hover:bg-white/5 rounded-xl text-muted-foreground hover:text-foreground transition-all"
+              className="p-2 hover:bg-accent rounded-xl text-muted-foreground hover:text-accent-foreground transition-all"
             >
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -333,16 +352,23 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-6">
+            <button 
+              onClick={toggleTheme}
+              className="p-2 hover:bg-white/5 rounded-xl text-muted-foreground hover:text-foreground transition-all"
+              title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+            >
+              {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+            </button>
             <div className="relative hidden md:block">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input 
                 type="text" 
                 placeholder="Search command..." 
-                className="bg-white/5 border border-border rounded-full py-1.5 pl-10 pr-4 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-primary/30 w-64 transition-all placeholder:text-muted-foreground/50"
+                className="bg-muted/50 border border-border rounded-full py-1.5 pl-10 pr-4 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-primary/30 w-64 transition-all placeholder:text-muted-foreground/50"
               />
             </div>
             <div className="flex items-center gap-2">
-              <button className="p-2 hover:bg-white/5 rounded-xl text-muted-foreground hover:text-foreground relative transition-all">
+              <button className="p-2 hover:bg-accent rounded-xl text-muted-foreground hover:text-accent-foreground relative transition-all">
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-primary rounded-full ring-2 ring-background"></span>
               </button>
