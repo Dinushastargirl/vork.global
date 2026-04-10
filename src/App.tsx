@@ -117,10 +117,43 @@ export default function App() {
     try {
       await signInWithPopup(auth, googleProvider);
       toast.success('Successfully logged in');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error:', error);
-      toast.error('Failed to login');
+      if (error?.code === 'auth/unauthorized-domain') {
+        toast.error('Login blocked: Domain not authorized in Firebase.', {
+          description: 'Use "Try Demo" below or add this domain to Firebase authorized domains.',
+          duration: 10000,
+        });
+      } else {
+        toast.error('Failed to login');
+      }
     }
+  };
+
+  const handleGuestLogin = () => {
+    setLoading(true);
+    // Simulate a brief loading state for better UX
+    setTimeout(() => {
+      const guestUser = {
+        uid: 'demo-user',
+        displayName: 'Demo Admin',
+        email: 'demo@nexus.ai',
+        photoURL: null,
+      } as any;
+      
+      const demoProfile: UserProfile = {
+        uid: 'demo-user',
+        name: 'Demo Admin',
+        email: 'demo@nexus.ai',
+        role: 'admin',
+        jobTitle: 'System Architect',
+      };
+      
+      setUser(guestUser);
+      setProfile(demoProfile);
+      setLoading(false);
+      toast.success('Welcome to the Demo Environment');
+    }, 800);
   };
 
   const handleLogout = async () => {
@@ -183,18 +216,39 @@ export default function App() {
           </div>
 
           <div className="flex flex-col items-center gap-6">
-            <Button 
-              onClick={handleLogin} 
-              size="lg" 
-              className="h-14 px-12 text-lg font-semibold rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all duration-300 group"
-            >
-              Get Started
-              <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <Button 
+                onClick={handleLogin} 
+                size="lg" 
+                className="h-14 px-12 text-lg font-bold rounded-full shadow-2xl shadow-primary/30 hover:shadow-primary/50 transition-all duration-500 group relative overflow-hidden bg-primary hover:scale-[1.02]"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Get Started
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
+                <motion.div 
+                  className="absolute inset-0 bg-linear-to-r from-primary via-indigo-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                />
+              </Button>
+
+              <Button 
+                onClick={handleGuestLogin}
+                variant="outline"
+                size="lg"
+                className="h-14 px-8 text-lg font-medium rounded-full border-white/10 hover:border-white/20 hover:bg-white/5 backdrop-blur-sm transition-all duration-300"
+              >
+                Try Demo
+              </Button>
+            </div>
             
-            <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono uppercase tracking-widest">
-              <Sparkles className="w-3 h-3 text-primary" />
-              <span>Enterprise Grade Security</span>
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono uppercase tracking-[0.2em] opacity-60">
+                <Sparkles className="w-3 h-3 text-primary animate-pulse" />
+                <span>Enterprise Grade Security</span>
+              </div>
+              <p className="text-[10px] text-muted-foreground/40 max-w-[280px] text-center">
+                Requires Google Authentication for production environments. Use Demo for preview.
+              </p>
             </div>
           </div>
 
